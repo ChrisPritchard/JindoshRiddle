@@ -92,7 +92,7 @@ let notForbidden description =
     Seq.forall (fun rule -> ruleDoesNotForbid rule description) rules
 
 [<EntryPoint>]
-let main argv =
+let main _ =
     let valid = allPossibilities () |> Seq.filter notForbidden |> Seq.toList
     printfn "%i" <| List.length valid
     0

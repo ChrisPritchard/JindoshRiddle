@@ -70,15 +70,25 @@ let allPossibilities () =
             }))))))
     }
 
+let applies subject description =
+    match subject with
+    | Woman w -> description.woman = w
+    | Place p -> description.position = p
+    | Owns o -> description.owns = o
+    | Drinking d -> description.drinking = d
+    | Wearing c -> description.wearing = c
+    | From h -> description.from = h
+
 let ruleDoesNotForbid rule description = 
     match rule with
-    | IsTrue (subject, rule) ->
-    | NotTrue (subject, rule) ->
+    | IsTrue (subject, fact) -> not (applies subject description) || applies fact description
+    | NotTrue (subject, fact) -> not (applies subject description) || not (applies fact description)
 
 let notForbidden description =
-    Seq.forall (fun rule -> ruleDoesNotForbid r description) rules
+    Seq.forall (fun rule -> ruleDoesNotForbid rule description) rules
 
 [<EntryPoint>]
 let main argv =
-    
+    let valid = allPossibilities () |> Seq.filter notForbidden |> Seq.toList
+    printfn "%i" <| List.length valid
     0

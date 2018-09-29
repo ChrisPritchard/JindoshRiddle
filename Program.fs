@@ -6,6 +6,7 @@ type Heirloom = PrizedRing | BirdPendant | Diamond | WarMedal | SnuffTin
 type Drink = Beer | Whiskey | Rum | Absinthe | Wine
 type HomeTown = Dunwall | Dobovka | Baleton | Fraeport | Karnaca
 
+[<CustomEquality; CustomComparison>]
 type Description = {
     position: Position
     woman: Women
@@ -14,10 +15,32 @@ type Description = {
     drinking: Drink
     owns: Heirloom
 }
+with 
+    override x.Equals(b) =
+        match b with
+        | :? Description as d -> 
+            x.position = d.position
+            || x.woman = d.woman
+            || x.wearing = d.wearing
+            || x.from = d.from
+            || x.drinking = d.drinking
+            || x.owns = d.owns
+        | _ -> false
+    override x.GetHashCode() = hash x
+    interface System.IComparable with
+      member x.CompareTo yobj =
+          match yobj with
+          | :? Description as y -> 
+            compare x.position y.position
+            + compare x.woman y.woman
+            + compare x.wearing y.wearing
+            + compare x.from y.from
+            + compare x.drinking y.drinking
+            + compare x.owns y.owns
+          | _ -> invalidArg "yobj" "cannot compare values of different types"
 
 type Subject = Woman of Women | Place of Position | Owns of Heirloom | Drinking of Drink | Wearing of Colours | From of HomeTown
 type FactRule = IsTrue of Subject * Subject | NotTrue of Subject * Subject
-type PlaceMentRule = NextTo of Subject * Subject
 
 let rules = [
     IsTrue (Woman MadamNatsiou, Wearing Purple)
@@ -39,13 +62,6 @@ let rules = [
     NotTrue (From Fraeport, Place Centre)
     IsTrue (Place Centre, Drinking Wine)
     IsTrue (Woman BaronessFinch, From Karnaca)
-]
-
-let placementRules = [
-    NextTo (Wearing Red, Wearing Blue)
-    NextTo (Owns BirdPendant, From Dunwall)
-    NextTo (From Baleton, Owns SnuffTin)
-    NextTo (From Baleton, Drinking Whiskey)
 ]
 
 let allPositions = [FarLeft;Left;Centre;Right;FarRight]
@@ -93,6 +109,10 @@ let notForbidden description =
 
 [<EntryPoint>]
 let main _ =
-    let valid = allPossibilities () |> Seq.filter notForbidden |> Seq.toList
-    printfn "%i" <| List.length valid
+    allPossibilities () 
+    |> Seq.filter notForbidden 
+    |> Seq.distinct 
+    // |> Seq.iter (fun d -> 
+    //     printfn "%A owns the %A" d.woman d.owns)
+    |> Seq.length |> fun l -> printfn "%i" l |> ignore
     0

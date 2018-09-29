@@ -22,6 +22,7 @@ type PlaceMentRule = NextTo of Subject * Subject
 let rules = [
     IsTrue (Woman MadamNatsiou, Wearing Purple)
     IsTrue (Woman CountessContee, Place FarLeft)
+    NotTrue (Woman CountessContee, Wearing White)
     IsTrue (Place Left, Wearing White)
     NotTrue (Wearing Red, Place FarRight)
     NotTrue (Wearing Blue, Place FarLeft)
@@ -42,6 +43,9 @@ let rules = [
 
 let placementRules = [
     NextTo (Wearing Red, Wearing Blue)
+    NextTo (Owns BirdPendant, From Dunwall)
+    NextTo (From Baleton, Owns SnuffTin)
+    NextTo (From Baleton, Drinking Whiskey)
 ]
 
 let allPositions = [FarLeft;Left;Centre;Right;FarRight]

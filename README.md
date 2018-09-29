@@ -17,3 +17,7 @@ _But who owned each?_
 ## Running
 
 This is a console app. When run, it will brute force combinations, checking each against the rules derived from above, and return a final solution. Time taken is completely dependent on the speed of the running machine.
+
+## CoreRT
+
+On my top of the line gaming PC (top model overclocked i7) it takes 47 seconds to run. In order to improve this, I have modified the solution to use CoreRT. If you have the C++ pre-requisites for your platform (e.g. clang for linux) and run `dotnet publish -r [win-x64|linux-x64|osx-x64]` it will generate a native-compiled assembly that will be much faster.

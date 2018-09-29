@@ -3,9 +3,9 @@ module Model
 type Position = FarLeft | Left | Centre | Right | FarRight
 type Women = LadyWinslow | DoctorMarcolla | CountessContee | MadamNatsiou | BaronessFinch
 type Colours = Purple | White | Red | Blue | Green
-type Heirloom = PrizedRing | BirdPendant | Diamond | WarMedal | SnuffTin
+type Heirloom = Ring | BirdPendant | Diamond | WarMedal | SnuffTin
 type Drink = Beer | Whiskey | Rum | Absinthe | Wine
-type HomeTown = Dunwall | Dobovka | Baleton | Fraeport | Karnaca
+type HomeTown = Dunwall | Dabokva | Baleton | Fraeport | Karnaca
 
 type Description = {
     position: Position

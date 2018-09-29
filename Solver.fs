@@ -14,9 +14,9 @@ let noConflict dx dy =
 let allPositions = [FarLeft;Left;Centre;Right;FarRight]
 let allWomen = [LadyWinslow;DoctorMarcolla;CountessContee;MadamNatsiou;BaronessFinch]
 let allColours = [Purple;White;Red;Blue;Green]
-let allHeirlooms = [PrizedRing;BirdPendant;Diamond;WarMedal;SnuffTin]
+let allHeirlooms = [Ring;BirdPendant;Diamond;WarMedal;SnuffTin]
 let allDrinks = [Beer;Whiskey;Rum;Absinthe;Wine]
-let allHomes = [Dunwall;Dobovka;Baleton;Fraeport;Karnaca]
+let allHomes = [Dunwall;Dabokva;Baleton;Fraeport;Karnaca]
 
 let inverseRules = rules |> List.collect (fun r ->
     let getInverses list except map fact =

@@ -2,7 +2,9 @@
 
 The Jindosh Riddle from Dishonered 2, solved using a F# bruteforce search.
 
-The raw text of the puzzle is as follows:
+__IMPORTANT!__ Those clever game devs have set it up so the puzzle is different each time. The text below is from my latest playthrough. In order to solve another puzzle, you will need to modify the contents of Rules.fs. Happily, thanks to the expressiveness of F#, this should be easy enough to do.
+
+The raw text of the puzzle (again, from my latest playthrough) is as follows:
 
 _At the dinner party were Lady Winslow, Doctor Marcolla, Countess Contee, Madam Natsiou, and Baroness Finch_
 

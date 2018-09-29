@@ -70,6 +70,14 @@ let allPossibilities () =
             }))))))
     }
 
+let ruleDoesNotForbid rule description = 
+    match rule with
+    | IsTrue (subject, rule) ->
+    | NotTrue (subject, rule) ->
+
+let notForbidden description =
+    Seq.forall (fun rule -> ruleDoesNotForbid r description) rules
+
 [<EntryPoint>]
 let main argv =
     

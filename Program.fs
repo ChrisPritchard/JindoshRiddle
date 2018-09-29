@@ -1,10 +1,19 @@
 ﻿
-type Women = LadyWinslow | DoctorMarcolla | CountessContee | MadamNatsiou | BaronessFinch
 type Position = FarLeft | Left | Centre | Right | FarRight
+type Women = LadyWinslow | DoctorMarcolla | CountessContee | MadamNatsiou | BaronessFinch
+type Colours = Purple | White | Red | Blue | Green
 type Heirloom = PrizedRing | BirdPendant | Diamond | WarMedal | SnuffTin
 type Drink = Beer | Whiskey | Rum | Absinthe | Wine
-type Colours = Purple | White | Red | Blue | Green
 type HomeTown = Dunwall | Dobovka | Baleton | Fraeport | Karnaca
+
+type Description = {
+    position: Position
+    woman: Women
+    wearing: Colours
+    from: HomeTown
+    drinking: Drink
+    owns: Heirloom
+}
 
 type Subject = Woman of Women | Place of Position | Owns of Heirloom | Drinking of Drink | Wearing of Colours | From of HomeTown
 type Rules = IsTrue of Subject * Subject | NotTrue of Subject * Subject | NextTo of Subject * Subject
@@ -17,26 +26,45 @@ let rules = [
     NotTrue (Wearing Red, Place FarRight)
     NotTrue (Wearing Blue, Place FarLeft)
     IsTrue (Wearing Red, Drinking Beer)
-    IsTrue (HomeTown Dunwall, Wearing Green)
-    NotTrue (Owns BirdPendant, HomeTown Dunwall)
+    IsTrue (From Dunwall, Wearing Green)
+    NotTrue (Owns BirdPendant, From Dunwall)
     IsTrue (Woman DoctorMarcolla, Owns PrizedRing)
-    NotTrue (Womam DoctorMarcolla, HomeTown Dobovka)
-    IsTrue (HomeTown Dobovka, Owns WarMedal)
-    NotTrue (HomeTown Baleton, Owns SnuffTin)
-    NotTrue (HomeTown Baleton, Drinking Whiskey)
+    NotTrue (Woman DoctorMarcolla, From Dobovka)
+    IsTrue (From Dobovka, Owns WarMedal)
+    NotTrue (From Baleton, Owns SnuffTin)
+    NotTrue (From Baleton, Drinking Whiskey)
     IsTrue (Woman LadyWinslow, Drinking Rum)
-    IsTrue (HomeTown Fraeport, Drinking Absinthe)
-    NotTrue (HomeTown Fraeport, Position Centre)
-    IsTrue (Position Centre, Drinking Wine)
-    IsTrue (BaronessFinch, HomeTown Karnaca)
+    IsTrue (From Fraeport, Drinking Absinthe)
+    NotTrue (From Fraeport, Place Centre)
+    IsTrue (Place Centre, Drinking Wine)
+    IsTrue (Woman BaronessFinch, From Karnaca)
 ]
 
-let allWomen = [LadyWinslow;DoctorMarcolla;CountessContee;MadamNatsiou;BaronessFinch]
 let allPositions = [FarLeft;Left;Centre;Right;FarRight]
+let allWomen = [LadyWinslow;DoctorMarcolla;CountessContee;MadamNatsiou;BaronessFinch]
+let allColours = [Purple;White;Red;Blue;Green]
 let allHeirlooms = [PrizedRing;BirdPendant;Diamond;WarMedal;SnuffTin]
 let allDrinks = [Beer;Whiskey;Rum;Absinthe;Wine]
-let allColours = [Purple;White;Red;Blue;Green]
 let allHomes = [Dunwall;Dobovka;Baleton;Fraeport;Karnaca]
+
+let allPossibilities () = 
+    seq {
+        yield!
+            [0..4] |> Seq.collect (fun p ->
+            [0..4] |> Seq.collect (fun w -> 
+            [0..4] |> Seq.collect (fun c ->
+            [0..4] |> Seq.collect (fun f ->
+            [0..4] |> Seq.collect (fun d ->
+            [0..4] |> Seq.map (fun o ->
+            {
+                position = allPositions.[p]
+                woman = allWomen.[w]
+                wearing = allColours.[c]
+                from = allHomes.[f]
+                drinking = allDrinks.[d]
+                owns = allHeirlooms.[o]
+            }))))))
+    }
 
 [<EntryPoint>]
 let main argv =

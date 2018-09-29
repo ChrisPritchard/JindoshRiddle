@@ -16,13 +16,13 @@ type Description = {
 }
 
 type Subject = Woman of Women | Place of Position | Owns of Heirloom | Drinking of Drink | Wearing of Colours | From of HomeTown
-type Rules = IsTrue of Subject * Subject | NotTrue of Subject * Subject | NextTo of Subject * Subject
+type FactRule = IsTrue of Subject * Subject | NotTrue of Subject * Subject
+type PlaceMentRule = NextTo of Subject * Subject
 
 let rules = [
     IsTrue (Woman MadamNatsiou, Wearing Purple)
     IsTrue (Woman CountessContee, Place FarLeft)
     IsTrue (Place Left, Wearing White)
-    NextTo (Wearing Red, Wearing Blue)
     NotTrue (Wearing Red, Place FarRight)
     NotTrue (Wearing Blue, Place FarLeft)
     IsTrue (Wearing Red, Drinking Beer)
@@ -38,6 +38,10 @@ let rules = [
     NotTrue (From Fraeport, Place Centre)
     IsTrue (Place Centre, Drinking Wine)
     IsTrue (Woman BaronessFinch, From Karnaca)
+]
+
+let placementRules = [
+    NextTo (Wearing Red, Wearing Blue)
 ]
 
 let allPositions = [FarLeft;Left;Centre;Right;FarRight]

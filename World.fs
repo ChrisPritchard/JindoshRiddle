@@ -61,10 +61,11 @@ let inverseRules = rules |> List.collect (fun r ->
     | IsTrue (Drinking o, fact) -> getInverses allDrinks o (Drinking) fact
     | IsTrue (From o, fact) -> getInverses allHomes o (From) fact)
 
-let allRules = rules @ inverseRules
+let allRules = rules// @ inverseRules
 
 let neighbourRules = [
     LeftOf (Wearing Red, Wearing Blue)
     NextTo (Owns BirdPendant, From Dunwall)
+    NextTo (From Baleton, Owns SnuffTin)
     NextTo (From Baleton, Drinking Whiskey)
 ]

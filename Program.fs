@@ -8,6 +8,28 @@ let noConflict dx dy =
     && dx.drinking <> dy.drinking
     && dx.owns <> dy.owns
 
+
+let allPositions = [FarLeft;Left;Centre;Right;FarRight]
+let allWomen = [LadyWinslow;DoctorMarcolla;CountessContee;MadamNatsiou;BaronessFinch]
+let allColours = [Purple;White;Red;Blue;Green]
+let allHeirlooms = [PrizedRing;BirdPendant;Diamond;WarMedal;SnuffTin]
+let allDrinks = [Beer;Whiskey;Rum;Absinthe;Wine]
+let allHomes = [Dunwall;Dobovka;Baleton;Fraeport;Karnaca]
+
+let inverseRules = rules |> List.collect (fun r ->
+    let getInverses list except map fact =
+        list |> List.except [except] |> List.map (fun o -> NotTrue (map o, fact))
+    match r with
+    | NotTrue _ -> [r]
+    | IsTrue (Place o, fact) -> getInverses allPositions o (Place) fact
+    | IsTrue (Woman o, fact) -> getInverses allWomen o (Woman) fact
+    | IsTrue (Wearing o, fact) -> getInverses allColours o (Wearing) fact
+    | IsTrue (Owns o, fact) -> getInverses allHeirlooms o (Owns) fact
+    | IsTrue (Drinking o, fact) -> getInverses allDrinks o (Drinking) fact
+    | IsTrue (From o, fact) -> getInverses allHomes o (From) fact)
+
+let allRules = rules @ inverseRules
+
 let allPossibilities () = 
     seq {
         yield!
@@ -44,7 +66,7 @@ let ruleDoesNotForbid rule description =
 let notForbidden description =
     Seq.forall (fun rule -> ruleDoesNotForbid rule description) allRules
 
-let rec addToGroup group validPeople =
+let rec distinctSet group validPeople =
     if Seq.length group = 5 then Some group
     else
         let valid = validPeople |> Seq.filter (fun p -> 
@@ -56,15 +78,16 @@ let rec addToGroup group validPeople =
                     yield! group
                     yield p
                 }
-            addToGroup newGroup validPeople
+            distinctSet newGroup validPeople
         | None -> None
 
 let rec ruleApplies rule group =
+    let pairs = group |> Seq.sortBy (fun o -> o.position) |> Seq.pairwise
     match rule with
     | LeftOf (subject, target) ->
-        group |> Seq.pairwise |> Seq.forall (fun (a, b) -> not (applies subject a) || applies target b)
+        pairs |> Seq.exists (fun (left, right) -> applies subject left && applies target right)
     | RightOf (subject, target) ->
-        group |> Seq.pairwise |> Seq.forall (fun (a, b) -> not (applies subject b) || applies target a)
+        pairs |> Seq.exists (fun (left, right) -> applies subject right && applies target left)
     | NextTo (subject1, subject2) ->
         ruleApplies (LeftOf (subject1, subject2)) group
         || ruleApplies (RightOf (subject1, subject2)) group
@@ -80,7 +103,7 @@ let main _ =
     let validSets = 
         validPeople 
         |> Seq.map (fun p -> 
-            addToGroup [p] validPeople) 
+            distinctSet [p] validPeople) 
         |> Seq.choose id
         |> Seq.filter notInvalid
     printfn "%i" <| Seq.length validSets

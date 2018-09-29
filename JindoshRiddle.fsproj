@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="World.fs" />
+    <Compile Include="Model.fs" />
+    <Compile Include="Rules.fs" />
+    <Compile Include="Solver.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

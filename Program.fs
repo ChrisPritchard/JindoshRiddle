@@ -20,7 +20,7 @@ let inverseRules = rules |> List.collect (fun r ->
     let getInverses list except map fact =
         list |> List.except [except] |> List.map (fun o -> NotTrue (map o, fact))
     match r with
-    | NotTrue _ -> [r]
+    | NotTrue _ -> []
     | IsTrue (Place o, fact) -> getInverses allPositions o (Place) fact
     | IsTrue (Woman o, fact) -> getInverses allWomen o (Woman) fact
     | IsTrue (Wearing o, fact) -> getInverses allColours o (Wearing) fact

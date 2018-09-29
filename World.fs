@@ -42,27 +42,6 @@ let rules = [
     IsTrue (Woman BaronessFinch, From Karnaca)
 ]
 
-let allPositions = [FarLeft;Left;Centre;Right;FarRight]
-let allWomen = [LadyWinslow;DoctorMarcolla;CountessContee;MadamNatsiou;BaronessFinch]
-let allColours = [Purple;White;Red;Blue;Green]
-let allHeirlooms = [PrizedRing;BirdPendant;Diamond;WarMedal;SnuffTin]
-let allDrinks = [Beer;Whiskey;Rum;Absinthe;Wine]
-let allHomes = [Dunwall;Dobovka;Baleton;Fraeport;Karnaca]
-
-let inverseRules = rules |> List.collect (fun r ->
-    let getInverses list except map fact =
-        list |> List.except [except] |> List.map (fun o -> NotTrue (map o, fact))
-    match r with
-    | NotTrue _ -> [r]
-    | IsTrue (Place o, fact) -> getInverses allPositions o (Place) fact
-    | IsTrue (Woman o, fact) -> getInverses allWomen o (Woman) fact
-    | IsTrue (Wearing o, fact) -> getInverses allColours o (Wearing) fact
-    | IsTrue (Owns o, fact) -> getInverses allHeirlooms o (Owns) fact
-    | IsTrue (Drinking o, fact) -> getInverses allDrinks o (Drinking) fact
-    | IsTrue (From o, fact) -> getInverses allHomes o (From) fact)
-
-let allRules = rules// @ inverseRules
-
 let neighbourRules = [
     LeftOf (Wearing Red, Wearing Blue)
     NextTo (Owns BirdPendant, From Dunwall)

@@ -8,7 +8,6 @@ let noConflict dx dy =
     && dx.drinking <> dy.drinking
     && dx.owns <> dy.owns
 
-
 let allPositions = [FarLeft;Left;Centre;Right;FarRight]
 let allWomen = [LadyWinslow;DoctorMarcolla;CountessContee;MadamNatsiou;BaronessFinch]
 let allColours = [Purple;White;Red;Blue;Green]
@@ -66,20 +65,17 @@ let ruleDoesNotForbid rule description =
 let notForbidden description =
     Seq.forall (fun rule -> ruleDoesNotForbid rule description) allRules
 
-let rec distinctSet group validPeople =
-    if Seq.length group = 5 then Some group
-    else
-        let valid = validPeople |> Seq.filter (fun p -> 
-            Seq.forall (noConflict p) group) |> Seq.tryHead
-        match valid with
-        | Some p -> 
-            let newGroup = 
-                seq {
-                    yield! group
-                    yield p
-                }
-            distinctSet newGroup validPeople
-        | None -> None
+let rec distinctGroups group validPeople =
+    seq {
+        if Set.count group = 5 then 
+            yield group
+        else 
+            yield! 
+                validPeople 
+                    |> Seq.filter (fun p -> not (Set.contains p group) && Seq.forall (noConflict p) group)
+                    |> Seq.collect (fun p -> distinctGroups (Set.add p group) validPeople)
+                    |> Seq.distinct
+    }
 
 let rec ruleApplies rule group =
     let pairs = group |> Seq.sortBy (fun o -> o.position) |> Seq.pairwise
@@ -100,11 +96,9 @@ let main _ =
     let validPeople = 
         allPossibilities () 
         |> Seq.filter notForbidden
-    let validSets = 
-        validPeople 
-        |> Seq.map (fun p -> 
-            distinctSet [p] validPeople) 
-        |> Seq.choose id
-        |> Seq.filter notInvalid
-    printfn "%i" <| Seq.length validSets
-    0        
+    distinctGroups Set.empty validPeople
+    |> Seq.filter notInvalid
+    |> Seq.head
+    |> Seq.iter (fun p ->
+        printfn "%A owns the %A" p.woman p.owns)
+    0

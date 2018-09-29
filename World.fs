@@ -65,7 +65,6 @@ let allRules = rules @ inverseRules
 
 let neighbourRules = [
     LeftOf (Wearing Red, Wearing Blue)
-    RightOf (Wearing Blue, Wearing Red)
     NextTo (Owns BirdPendant, From Dunwall)
     NextTo (From Baleton, Drinking Whiskey)
 ]

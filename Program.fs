@@ -59,13 +59,29 @@ let rec addToGroup group validPeople =
             addToGroup newGroup validPeople
         | None -> None
 
+let rec ruleApplies rule group =
+    match rule with
+    | LeftOf (subject, target) ->
+        group |> Seq.pairwise |> Seq.forall (fun (a, b) -> not (applies subject a) || applies target b)
+    | RightOf (subject, target) ->
+        group |> Seq.pairwise |> Seq.forall (fun (a, b) -> not (applies subject b) || applies target a)
+    | NextTo (subject1, subject2) ->
+        ruleApplies (LeftOf (subject1, subject2)) group
+        || ruleApplies (RightOf (subject1, subject2)) group
+
+let notInvalid group =
+    Seq.forall (fun rule -> ruleApplies rule group) neighbourRules
+
 [<EntryPoint>]
 let main _ =
-    let validPeople = allPossibilities () |> Seq.filter notForbidden
+    let validPeople = 
+        allPossibilities () 
+        |> Seq.filter notForbidden
     let validSets = 
         validPeople 
         |> Seq.map (fun p -> 
             addToGroup [p] validPeople) 
         |> Seq.choose id
+        |> Seq.filter notInvalid
     printfn "%i" <| Seq.length validSets
     0        

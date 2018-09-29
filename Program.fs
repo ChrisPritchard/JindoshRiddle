@@ -99,9 +99,7 @@ let notForbidden description =
 
 [<EntryPoint>]
 let main _ =
-    allPossibilities () 
-    |> Seq.filter notForbidden 
-    // |> Seq.iter (fun d -> 
-    //     printfn "%A owns the %A" d.woman d.owns)
-    |> Seq.length |> fun l -> printfn "%i" l |> ignore
+    let validPeople = allPossibilities () |> Seq.filter notForbidden
+    printfn "%i" <| Seq.length validPeople
     0
+        

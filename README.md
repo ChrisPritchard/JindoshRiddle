@@ -19,11 +19,3 @@ _But who owned each?_
 ## Running
 
 This is a console app. When run, it will brute force combinations, checking each against the rules derived from above, and return a final solution. Time taken is completely dependent on the speed of the running machine, and is also effected by the puzzle. For example, the above takes around 47 seconds on my i7 8700, but another puzzle from a different playthrough took about 0.9 seconds.
-
-## CoreRT
-
-Some puzzles take a while to solve. If you have one of these, or a slower computer (though a PC capable of running Dishonered 2 is probably fine), then you could leverage CoreRT to generate a native executable. I have set up the solution with the right references/nuget for this, so all that is needed is to have the requisites installed and to build with the right command.
-
-The pre-requisites are here: https://github.com/dotnet/corert/blob/master/samples/prerequisites.md
-
-To build, follow the instructions here: https://github.com/dotnet/corert/blob/master/Documentation/how-to-build-and-run-ilcompiler-in-console-shell-prompt.md#using-ryujit

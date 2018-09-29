@@ -22,7 +22,7 @@ This is a console app. When run, it will brute force combinations, checking each
 
 ## CoreRT
 
-Some puzzles take a while to solve. If you have one of these, or a slower computer (though a PC capable of running Dishonered 2 is probably fine), then you could leverage CoreRT to generate a native executable. 
+Some puzzles take a while to solve. If you have one of these, or a slower computer (though a PC capable of running Dishonered 2 is probably fine), then you could leverage CoreRT to generate a native executable. I have set up the solution with the right references/nuget for this, so all that is needed is to have the requisites installed and to build with the right command.
 
 The pre-requisites are here: https://github.com/dotnet/corert/blob/master/samples/prerequisites.md
 

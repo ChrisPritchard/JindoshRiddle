@@ -93,6 +93,7 @@ let rec ruleApplies rule group =
 
 let notInvalid group =
     Seq.forall (fun rule -> ruleApplies rule group) neighbourRules
+    
 let solve () =
     let validPeople = 
         allPossibilities () 

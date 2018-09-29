@@ -6,7 +6,6 @@ type Heirloom = PrizedRing | BirdPendant | Diamond | WarMedal | SnuffTin
 type Drink = Beer | Whiskey | Rum | Absinthe | Wine
 type HomeTown = Dunwall | Dobovka | Baleton | Fraeport | Karnaca
 
-[<CustomEquality; CustomComparison>]
 type Description = {
     position: Position
     woman: Women
@@ -15,29 +14,6 @@ type Description = {
     drinking: Drink
     owns: Heirloom
 }
-with 
-    override x.Equals(b) =
-        match b with
-        | :? Description as d -> 
-            x.position = d.position
-            || x.woman = d.woman
-            || x.wearing = d.wearing
-            || x.from = d.from
-            || x.drinking = d.drinking
-            || x.owns = d.owns
-        | _ -> false
-    override x.GetHashCode() = hash x
-    interface System.IComparable with
-      member x.CompareTo yobj =
-          match yobj with
-          | :? Description as y -> 
-            compare x.position y.position
-            + compare x.woman y.woman
-            + compare x.wearing y.wearing
-            + compare x.from y.from
-            + compare x.drinking y.drinking
-            + compare x.owns y.owns
-          | _ -> invalidArg "yobj" "cannot compare values of different types"
 
 type Subject = Woman of Women | Place of Position | Owns of Heirloom | Drinking of Drink | Wearing of Colours | From of HomeTown
 type FactRule = IsTrue of Subject * Subject | NotTrue of Subject * Subject
@@ -70,6 +46,20 @@ let allColours = [Purple;White;Red;Blue;Green]
 let allHeirlooms = [PrizedRing;BirdPendant;Diamond;WarMedal;SnuffTin]
 let allDrinks = [Beer;Whiskey;Rum;Absinthe;Wine]
 let allHomes = [Dunwall;Dobovka;Baleton;Fraeport;Karnaca]
+
+let inverseRules = rules |> List.collect (fun r ->
+    let getInverses list except map fact =
+        list |> List.except [except] |> List.map (fun o -> NotTrue (map o, fact))
+    match r with
+    | NotTrue _ -> [r]
+    | IsTrue (Place o, fact) -> getInverses allPositions o (Place) fact
+    | IsTrue (Woman o, fact) -> getInverses allWomen o (Woman) fact
+    | IsTrue (Wearing o, fact) -> getInverses allColours o (Wearing) fact
+    | IsTrue (Owns o, fact) -> getInverses allHeirlooms o (Owns) fact
+    | IsTrue (Drinking o, fact) -> getInverses allDrinks o (Drinking) fact
+    | IsTrue (From o, fact) -> getInverses allHomes o (From) fact)
+
+let allRules = rules @ inverseRules
 
 let allPossibilities () = 
     seq {
@@ -105,13 +95,12 @@ let ruleDoesNotForbid rule description =
     | NotTrue (subject, fact) -> not (applies subject description) || not (applies fact description)
 
 let notForbidden description =
-    Seq.forall (fun rule -> ruleDoesNotForbid rule description) rules
+    Seq.forall (fun rule -> ruleDoesNotForbid rule description) allRules
 
 [<EntryPoint>]
 let main _ =
     allPossibilities () 
     |> Seq.filter notForbidden 
-    |> Seq.distinct 
     // |> Seq.iter (fun d -> 
     //     printfn "%A owns the %A" d.woman d.owns)
     |> Seq.length |> fun l -> printfn "%i" l |> ignore

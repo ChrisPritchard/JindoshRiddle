@@ -73,7 +73,7 @@ let rec distinctGroups group validPeople =
             yield! 
                 validPeople 
                     |> Seq.filter (fun p -> not (Set.contains p group) && Seq.forall (noConflict p) group)
-                    |> Seq.collect (fun p -> distinctGroups (Set.add p group) validPeople)
+                    |> Seq.collect (fun p -> distinctGroups (Set.add p group) validPeople |> Seq.distinct)
                     |> Seq.distinct
     }
 
@@ -93,6 +93,8 @@ let notInvalid group =
 
 [<EntryPoint>]
 let main _ =
+    let timer = System.Diagnostics.Stopwatch.StartNew ()
+
     let validPeople = 
         allPossibilities () 
         |> Seq.filter notForbidden
@@ -101,4 +103,9 @@ let main _ =
     |> Seq.head
     |> Seq.iter (fun p ->
         printfn "%A owns the %A" p.woman p.owns)
+
+    timer.Stop ()
+    printfn ""
+    printfn "Time taken: %f seconds" <| float timer.ElapsedMilliseconds / 1000.
+
     0

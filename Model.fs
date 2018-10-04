@@ -16,6 +16,11 @@ type Description = {
     owns: Heirloom
 }
 
-type Subject = Woman of Women | Place of Position | Owns of Heirloom | Drinking of Drink | Wearing of Colours | From of HomeTown
-type FactRule = IsTrue of Subject * Subject | NotTrue of Subject * Subject
-type NeighbourRule = NextTo of Subject * Subject | LeftOf of Subject * Subject | RightOf of Subject * Subject
+type Testable = Person of Description | Group of seq<Description>
+
+type Subject = 
+    | Woman of Women | Place of Position | Owns of Heirloom 
+    | Drinking of Drink | Wearing of Colours | From of HomeTown
+type Rule = 
+    | IsTrue of Subject * Subject | NotTrue of Subject * Subject 
+    | NextTo of Subject * Subject | LeftOf of Subject * Subject | RightOf of Subject * Subject

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="Model.fs" />
+    <Compile Include="Collections.fs" />
     <Compile Include="Rules.fs" />
     <Compile Include="Solver.fs" />
     <Compile Include="Program.fs" />

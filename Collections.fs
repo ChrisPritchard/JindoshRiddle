@@ -36,14 +36,15 @@ let noConflict dx dy =
     && dx.drinking <> dy.drinking
     && dx.owns <> dy.owns
 
-let rec distinctGroups group validPeople =
+let rec distinctGroups group people =
     seq {
         if Set.count group = 5 then 
             yield group
         else 
             yield! 
-                validPeople 
-                    |> Seq.filter (fun p -> not (Set.contains p group) && Seq.forall (noConflict p) group)
-                    |> Seq.collect (fun p -> distinctGroups (Set.add p group) validPeople)
+                people 
+                    |> Seq.filter (fun p -> Seq.forall (noConflict p) group)
+                    |> Seq.collect (fun p -> 
+                        distinctGroups (Set.add p group) (Seq.except [p] people))
                     |> Seq.distinct
     }

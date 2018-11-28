@@ -19,3 +19,7 @@ _But who owned each?_
 ## Running
 
 This is a console app. When run, it will brute force combinations, checking each against the rules derived from above, and return a final solution. Time taken is completely dependent on the speed of the running machine, and is also effected by the puzzle. For example, the above takes around 47 seconds on my i7 8700, but another puzzle from a different playthrough took about 0.9 seconds.
+
+## Go version
+
+I've built this solution again in **Go**, which runs much faster. You can find this [here](https://github.com/ChrisPritchard/JindoshRiddle-Go).

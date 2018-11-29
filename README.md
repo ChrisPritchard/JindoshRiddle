@@ -22,6 +22,6 @@ This is a console app. When run, it will brute force combinations, checking each
 
 ## Go version
 
-I've built this solution again in **Go**, which runs slightly faster. You can find this [here](https://github.com/ChrisPritchard/JindoshRiddle-Go). I thought this particular problem would be better solved in that language, which initially ran much faster (1500x in fact) until I changed the F# solution to use Lists instead of seqs, at which point the difference is only about 40 ms. 
+I've built this solution again in **Go**, which runs slightly faster. You can find this [here](https://github.com/ChrisPritchard/JindoshRiddle-Go). I thought this particular problem would be better solved in that language, although ultimately they, impressively, run at about the same speed (once I fixed a lazy execution bug in the F# version). 
 
 Both languages are great: I recommend learning both, and using each for their strengths! If anything, these two projects provide a nice comparison of the way the two languages approach things, as they are structured and implemented almost identically.

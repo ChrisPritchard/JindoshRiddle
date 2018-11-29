@@ -18,12 +18,10 @@ _But who owned each?_
 
 ## Running
 
-This is a console app. When run, it will brute force combinations, checking each against the rules derived from above, and return a final solution. Time taken is completely dependent on the speed of the running machine, and is also effected by the puzzle. For example, the above takes around 47 seconds on my i7 8700, but another puzzle from a different playthrough took about 0.9 seconds.
+This is a console app. When run, it will brute force combinations, checking each against the rules derived from above, and return a final solution. Time taken is completely dependent on the speed of the running machine, and is also effected by the puzzle, but generally should take only a few seconds
 
 ## Go version
 
-I've built this solution again in **Go**, which runs much faster. You can find this [here](https://github.com/ChrisPritchard/JindoshRiddle-Go). I thought this particular problem would be better solved in that language, which runs much faster (albeit at the cost of F#'s beautiful expressiveness). Both languages are great: I recommend learning both, and using each for their strengths! If anything, these two projects provide a nice comparison of the way the two languages approach things, as they are structured and implemented almost identically.
+I've built this solution again in **Go**, which runs slightly faster. You can find this [here](https://github.com/ChrisPritchard/JindoshRiddle-Go). I thought this particular problem would be better solved in that language, which initially ran much faster (1500x in fact) until I changed the F# solution to use Lists instead of seqs, at which point the difference is only about 40 ms. 
 
-After finishing the build and testing, the Go solution on my Surface Book 2 took on average, 0.1 seconds. I.e. 100 miliseconds or thereabout. The same solution in F# takes between 50 and 150 *seconds*, so much, *much* slower. 
-
-I am guessing if I got better at F#, and particularly if I use some of the newer .NET features like spans, I can get it to run at a closer performance to Go. But if I need to faff about with unmanaged pointers, then perhaps its a sign the particular problem is better suited to a lower-level language? 
+Both languages are great: I recommend learning both, and using each for their strengths! If anything, these two projects provide a nice comparison of the way the two languages approach things, as they are structured and implemented almost identically.

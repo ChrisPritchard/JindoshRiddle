@@ -22,4 +22,8 @@ This is a console app. When run, it will brute force combinations, checking each
 
 ## Go version
 
-I've built this solution again in **Go**, which runs much faster. You can find this [here](https://github.com/ChrisPritchard/JindoshRiddle-Go).
+I've built this solution again in **Go**, which runs much faster. You can find this [here](https://github.com/ChrisPritchard/JindoshRiddle-Go). I thought this particular problem would be better solved in that language, which runs much faster (albeit at the cost of F#'s beautiful expressiveness). Both languages are great: I recommend learning both, and using each for their strengths! If anything, these two projects provide a nice comparison of the two languages approaches to constructs, as they are structured and implemented almost identically.
+
+After finishing the build and testing, the Go solution on my Surface Book 2 took on average, 0.1 seconds. I.e. 100 miliseconds or thereabout. This same solution in F# takes between 50 and 150 *seconds*, so much, *much* slower. 
+
+I am guessing if I got better at F#, and particularly if I use some of the newer .NET features like spans, I can get it to run at a closer performance to Go. But if need to faff about with unmanaged pointers, then perhaps its a sign the particular problem is better suited to a lower-level language? 

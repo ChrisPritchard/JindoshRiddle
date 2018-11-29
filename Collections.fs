@@ -9,8 +9,8 @@ let allHeirlooms = [Ring;BirdPendant;Diamond;WarMedal;SnuffTin]
 let allDrinks = [Beer;Whiskey;Rum;Absinthe;Wine]
 let allHomes = [Dunwall;Dabokva;Baleton;Fraeport;Karnaca]
 
-let allPossibilities () = 
-    [
+let allPossibilities = 
+    seq {
         yield!
             [0..4] |> Seq.collect (fun p ->
             [0..4] |> Seq.collect (fun w -> 
@@ -26,7 +26,7 @@ let allPossibilities () =
                 drinking = allDrinks.[d]
                 owns = allHeirlooms.[o]
             }))))))
-    ]
+    }
 
 let noConflict dx dy = 
     dx.position <> dy.position
@@ -37,13 +37,13 @@ let noConflict dx dy =
     && dx.owns <> dy.owns
 
 let rec distinctGroups group people =
-    [
+    seq {
         if Set.count group = 5 then 
             yield group
         else 
             yield! 
                 people 
                     |> List.filter (fun p -> Seq.forall (noConflict p) group)
-                    |> List.collect (fun p -> 
+                    |> Seq.collect (fun p -> 
                         distinctGroups (Set.add p group) people)
-    ]
+    }

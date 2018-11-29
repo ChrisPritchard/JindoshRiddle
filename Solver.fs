@@ -37,8 +37,11 @@ let rec ruleDoesNotForbid testable rule =
     | _ -> true;
   
 let solve () =
-    allPossibilities () 
-        |> List.filter (fun p -> rules |> List.forall (ruleDoesNotForbid <| Person p))
+    let people =
+        allPossibilities 
+        |> Seq.filter (fun p -> rules |> List.forall (ruleDoesNotForbid <| Person p))
+        |> Seq.toList
+    people
         |> distinctGroups Set.empty
-        |> List.filter (fun g -> rules |> List.forall (ruleDoesNotForbid <| Group g))
-        |> List.head
+        |> Seq.filter (fun g -> rules |> List.forall (ruleDoesNotForbid <| Group g))
+        |> Seq.head
